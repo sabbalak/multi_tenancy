@@ -1,10 +1,40 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 
-import { ProductModule } from './Product/product.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { envConfigSchema } from './common/schehama'
+
+import { ProductModule } from './Module/Product/product.module';
+import { TenantModule } from './Module/Tenant/tenant.module';
 
  
 @Module({
-  imports: [ProductModule],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: [`./src/.env`],
+      validationSchema: envConfigSchema
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DATABASE_HOSTNAME'), 
+        port: +configService.get('DATABASE_POST'), 
+        username: configService.get('DATABASE_USERNAME'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'), 
+        entities: [join(__dirname, '**/**.entity{.ts,.js}')],
+        synchronize: true,
+        autoLoadEntities: true,
+        logging: true, 
+    })
+    }),
+    TenantModule
+    // ProductModule
+  
+  ],
   controllers: [],
   providers: [],
 })

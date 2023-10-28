@@ -20,4 +20,4 @@ export class GetProductFilterDto {
     @IsOptional()
     @IsEnum(ProductCategory)
     category: ProductCategory;
-}
+}  
