@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Tenant } from './tenant.modal';
 import { CreateTenantDto, UpdateTenantDto } from './common/dto';
 import { TenantRepository } from './tenant.repository';
+import { TenantSettings } from './tenant.settings.modal';
 
 @Injectable()
 export class TenantService {
@@ -14,6 +15,10 @@ export class TenantService {
 
     getTenantById(id: string): Promise<Tenant> {
         return this.tenantRepository.getTenantById(id);
+    }
+
+    getTenantSettingById(id: string): Promise<TenantSettings> {
+        return this.tenantRepository.getTenantSettingById(id);
     }
 
     updateTenant(id: string, obj: UpdateTenantDto): Promise<Tenant> {

@@ -7,6 +7,7 @@ import { envConfigSchema } from './common/schehama'
 
 import { ProductModule } from './Module/Product/product.module';
 import { TenantModule } from './Module/Tenant/tenant.module';
+import { UserModule } from './Module/User/user.module';
 
  
 @Module({
@@ -31,7 +32,8 @@ import { TenantModule } from './Module/Tenant/tenant.module';
         logging: true, 
     })
     }),
-    TenantModule
+    TenantModule,
+    UserModule
     // ProductModule
   
   ],
