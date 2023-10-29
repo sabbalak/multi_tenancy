@@ -55,6 +55,15 @@ export class TenantRepository extends Repository<Tenant> {
         }
     }
 
+    async getTenantSettingById(id: string): Promise<TenantSettings> {
+        try {
+            const tenantSettings = await this.tenantSettings.createQueryBuilder('tenant-settings').andWhere('tenant-settings.tenant = :id', { id: id }).getOne();
+            return tenantSettings;
+        } catch (err) {
+            throw new NotFoundException(`Tenant Setting ${id} does not exist`);
+        }
+    }
+
     async updateTenant(id: string, obj: UpdateTenantDto): Promise<Tenant> {
         const { billing, contact, userCount, currency, locale, agreementDoc } = obj;
         try {

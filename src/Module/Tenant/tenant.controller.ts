@@ -14,6 +14,7 @@ import {
 import { TenantService } from './tenant.service';
 import { Tenant } from './common/interface';
 import { CreateTenantDto, UpdateTenantDto } from './common/dto';
+import { TenantSettings } from './tenant.settings.modal';
 
 
 @Controller('tenants')
@@ -28,6 +29,11 @@ export class TenantController {
   @Get('/:id')
   getTenantById(@Param('id') id: string): Promise<Tenant> {
     return this.tenantService.getTenantById(id);
+  }
+
+  @Get('/:id/settings')
+  getTenantSettingById(@Param('id') id: string): Promise<TenantSettings> {
+    return this.tenantService.getTenantSettingById(id);
   }
 
   @Post()
