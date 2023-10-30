@@ -7,6 +7,7 @@ import { TenantSettings } from "./tenant.settings.modal";
 import { InjectRepository } from "@nestjs/typeorm";
 
 
+
 @Injectable()
 export class TenantRepository extends Repository<Tenant> {
 

@@ -5,9 +5,10 @@ import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { envConfigSchema } from './common/schehama'
 
-import { ProductModule } from './Module/Product/product.module';
 import { TenantModule } from './Module/Tenant/tenant.module';
 import { UserModule } from './Module/User/user.module';
+import { AuthModule } from './Module/Auth/auth.module';
+import { ProductModule } from './Module/Product/product.module';
 
  
 @Module({
@@ -33,8 +34,9 @@ import { UserModule } from './Module/User/user.module';
     })
     }),
     TenantModule,
-    UserModule
-    // ProductModule
+    UserModule,
+    AuthModule,
+    ProductModule
   
   ],
   controllers: [],

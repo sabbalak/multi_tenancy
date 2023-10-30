@@ -27,7 +27,7 @@ export class User {
     })
     profile: Profile;
 
-    @ManyToOne(() => Tenant, { eager: false })
+    @ManyToOne(() => Tenant, { eager: true })
     tenant: string;
 
     @OneToOne(() => UserPassword, (userPassword) => userPassword.user, { eager: true })

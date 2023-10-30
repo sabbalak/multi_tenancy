@@ -1,10 +1,16 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
+import * as bcrypt from 'bcryptjs';
 import { User } from "./user.modal";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserPassword } from "./user.password.modal";
 import { CreateUserDto, TenantIdDto, UpdateUserDto, UpdateUserPasswordDto } from "./common/dto";
 import { UserStatus } from "./common/enum";
+import { AccessToken, JwtPayload } from "../Auth/common/interface";
+import { JwtService } from "@nestjs/jwt";
+import { LoginDto } from "../Auth/common/dto";
+import { TenantRepository } from "../Tenant/tenant.repository";
+import { Tenant } from "../Tenant/tenant.modal";
 
 
 @Injectable()
@@ -12,15 +18,23 @@ export class UserRepository extends Repository<User> {
 
     constructor(
         private dataSource: DataSource,
+        private jwtService: JwtService,
         @InjectRepository(UserPassword)
         private readonly userPassword: Repository<UserPassword>,
+        // @InjectRepository(Tenant)
+        // private readonly tenant: Repository<Tenant>,
     ) {
         super(User, dataSource.createEntityManager())
+    }
+
+    private async hasPassword(password: string, salt: string): Promise<string> {
+        return await bcrypt.hash(password, salt);
     }
 
     async createUser(query: TenantIdDto, obj: CreateUserDto): Promise<User> {
         const { name, role, profile, password, username } = obj;
         try {
+            const salt = await bcrypt.genSalt();
             const UserBase = this.create({
                 name,
                 role,
@@ -33,7 +47,8 @@ export class UserRepository extends Repository<User> {
             const userPasswordBase = this.userPassword.create({
                 user: UserResult.id,
                 username,
-                password
+                password: await this.hasPassword(password, salt),
+                salt
             });
 
             await this.userPassword.save(userPasswordBase);
@@ -41,6 +56,23 @@ export class UserRepository extends Repository<User> {
             return UserBase;
         } catch (err) {
             throw new ConflictException(`${name} already exists`)
+        }
+    }
+
+    async getOneByUsername(username: string): Promise<User> {
+        try {
+            const userPassword = await this.userPassword.createQueryBuilder('users-password').andWhere('users-password.username = :username', { username: username }).getOne();
+
+            const users = await this.createQueryBuilder('users').andWhere('users.id = :id', { id: userPassword.user }).getOne();
+            console.log('users1', users)
+            // const tenant = await this.tenant.createQueryBuilder('tenants').andWhere('users.id = :id', { id: userPassword.user }).getOne();
+            
+            users.userPassword = userPassword;
+
+            // users.tenantDetails = userPassword;
+            return users;
+        } catch (err) {
+            throw new NotFoundException(`User ${username} does not exist`);
         }
     }
 
@@ -109,5 +141,21 @@ export class UserRepository extends Repository<User> {
             item.userPassword = userPassword.find(a => a.user === item.id)
         })
         return tenants;
+    }
+
+    async validateUserPassword(body: LoginDto): Promise<string> {
+        const { username, password } = body;
+        const authUser = await this.userPassword.findOne({ where: { username: username}});
+        if (authUser && (await authUser.validatePassword(password))) {
+            return authUser.username;
+        } else {
+            return null;
+        }
+    }
+
+    async getAccessToken(username: string): Promise<AccessToken> {
+        const payload: JwtPayload = { username };
+        const accessToken = await this.jwtService.sign(payload)
+        return {accessToken};
     }
 }
