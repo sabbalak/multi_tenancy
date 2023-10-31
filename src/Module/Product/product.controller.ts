@@ -34,7 +34,7 @@ import { GetUser } from '../Auth/get.user.decorator';
   
     @Get('/:id')
     getProductById(@Param('id') id: string, @GetUser() user: User): Product {
-      console.log('user', user)
+      console.log('user', user);
       return this.productService.getProductById(id);
     }
   

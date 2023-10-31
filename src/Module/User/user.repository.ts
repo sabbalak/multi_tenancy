@@ -2,7 +2,7 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { DataSource, Repository } from "typeorm";
 import * as bcrypt from 'bcryptjs';
 import { User } from "./user.modal";
-import { InjectRepository } from "@nestjs/typeorm";
+import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { UserPassword } from "./user.password.modal";
 import { CreateUserDto, TenantIdDto, UpdateUserDto, UpdateUserPasswordDto } from "./common/dto";
 import { UserStatus } from "./common/enum";
@@ -11,6 +11,7 @@ import { JwtService } from "@nestjs/jwt";
 import { LoginDto } from "../Auth/common/dto";
 import { TenantRepository } from "../Tenant/tenant.repository";
 import { Tenant } from "../Tenant/tenant.modal";
+import { TenantSettings } from "../Tenant/tenant.settings.modal";
 
 
 @Injectable()
@@ -21,8 +22,14 @@ export class UserRepository extends Repository<User> {
         private jwtService: JwtService,
         @InjectRepository(UserPassword)
         private readonly userPassword: Repository<UserPassword>,
-        // @InjectRepository(Tenant)
-        // private readonly tenant: Repository<Tenant>,
+        @InjectRepository(Tenant)
+        private readonly tenant: Repository<Tenant>,
+        @InjectRepository(TenantSettings)
+        private readonly tenantSettings: Repository<TenantSettings>,
+
+        @InjectRepository(TenantRepository)
+        private readonly tenantRepository: TenantRepository,
+
     ) {
         super(User, dataSource.createEntityManager())
     }
@@ -59,17 +66,25 @@ export class UserRepository extends Repository<User> {
         }
     }
 
-    async getOneByUsername(username: string): Promise<User> {
+    async getOneByUsername(username: string): Promise<any> {
         try {
+
             const userPassword = await this.userPassword.createQueryBuilder('users-password').andWhere('users-password.username = :username', { username: username }).getOne();
 
-            const users = await this.createQueryBuilder('users').andWhere('users.id = :id', { id: userPassword.user }).getOne();
-            console.log('users1', users)
-            // const tenant = await this.tenant.createQueryBuilder('tenants').andWhere('users.id = :id', { id: userPassword.user }).getOne();
+            const users = await this.createQueryBuilder('users').innerJoin('tenants', 'tenants').where('tenants.id = users.tenant').andWhere('users.id = :id', { id: userPassword.user }).getOne();
             
-            users.userPassword = userPassword;
+            const tenant = await this.tenant.createQueryBuilder('tenants').andWhere('tenants.id = :id', { id: users.tenant }).getOne();
 
-            // users.tenantDetails = userPassword;
+            const tenantSettings = await this.tenantSettings.createQueryBuilder('tenant-settings').andWhere('tenant-settings.tenant = :id', { id: users.tenant }).getOne();
+
+            tenant.tenantSettings = tenantSettings;
+            users.userPassword = userPassword;
+            users.tenants = tenant;
+
+            // console.log('id', '32e81ee8-e814-43c5-8723-79593c26397e')
+            // console.log(await this.tenantRepository.getTenantById('32e81ee8-e814-43c5-8723-79593c26397e'))
+            // console.log('id', '32e81ee8-e814-43c5-8723-79593c26397e')        
+
             return users;
         } catch (err) {
             throw new NotFoundException(`User ${username} does not exist`);

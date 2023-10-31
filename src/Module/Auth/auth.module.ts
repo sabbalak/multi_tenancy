@@ -9,7 +9,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserRepository } from '../User/user.repository';
 import { JwtStrategy } from './jwt.strategy';
 import { UserPassword } from '../User/user.password.modal';
-// import { Tenant } from '../Tenant/tenant.modal';
+import { Tenant } from '../Tenant/tenant.modal';
+import { TenantSettings } from '../Tenant/tenant.settings.modal';
+import { TenantRepository } from '../Tenant/tenant.repository';
 
 const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
 
@@ -30,7 +32,9 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
     TypeOrmModule.forFeature([
         User,
         UserPassword,
-        // Tenant
+        Tenant,
+        TenantSettings,
+        TenantRepository
     ]),
   ],
   controllers: [ AuthController],

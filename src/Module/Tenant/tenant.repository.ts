@@ -6,8 +6,6 @@ import { TenantStatus } from "./common/enum";
 import { TenantSettings } from "./tenant.settings.modal";
 import { InjectRepository } from "@nestjs/typeorm";
 
-
-
 @Injectable()
 export class TenantRepository extends Repository<Tenant> {
 
@@ -45,7 +43,8 @@ export class TenantRepository extends Repository<Tenant> {
         }
     }
 
-    async getTenantById(id: string): Promise<Tenant> {
+    public async getTenantById(id: string): Promise<Tenant> {
+        console.log('id', id)
         try {
             const tenants = await this.createQueryBuilder('tenants').andWhere('tenants.id = :id', { id }).getOne();
             const tenantSettings = await this.tenantSettings.createQueryBuilder('tenant-settings').andWhere('tenant-settings.tenant = :id', { id: tenants.id }).getOne();

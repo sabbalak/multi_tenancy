@@ -10,7 +10,7 @@ import { TenantSettings } from './tenant.settings.modal';
   imports: [
     TypeOrmModule.forFeature([
         Tenant,
-        TenantSettings
+        TenantSettings,
     ]),
   ],
   controllers: [ TenantController],

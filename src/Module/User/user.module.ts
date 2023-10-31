@@ -9,7 +9,9 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from '../Auth/jwt.strategy';
-// import { Tenant } from '../Tenant/tenant.modal';
+import { Tenant } from '../Tenant/tenant.modal';
+import { TenantSettings } from '../Tenant/tenant.settings.modal';
+import { TenantRepository } from '../Tenant/tenant.repository';
 
 const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
 
@@ -30,8 +32,10 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
       TypeOrmModule.forFeature([
           User,
           UserPassword,
-          // Tenant
-      ]),
+          Tenant,
+          TenantSettings,
+          TenantRepository,
+        ]),
   ],
   controllers: [ UserController],
   providers: [UserService, UserRepository, JwtStrategy],

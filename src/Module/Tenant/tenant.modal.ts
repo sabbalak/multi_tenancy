@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, Unique, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, Unique, JoinTable, ManyToOne, OneToMany } from "typeorm";
 import { TenantStatus } from "./common/enum";
 import { TenantSettings } from "./tenant.settings.modal";
+import { User } from "../User/user.modal";
 
 export class Billing {
     email: string;
@@ -41,6 +42,10 @@ export class Tenant {
 
     @OneToOne(() => TenantSettings, (tenantSettings) => tenantSettings.tenant, { eager: true })
     tenantSettings: TenantSettings;
+
+    @OneToMany(() => User, (user) => user.tenant, { eager: true })
+    @JoinColumn()
+    user: User;
 
     @CreateDateColumn({ name: 'created_at' }) // Recommended
     createdAt: Date;

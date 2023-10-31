@@ -27,8 +27,9 @@ export class User {
     })
     profile: Profile;
 
-    @ManyToOne(() => Tenant, { eager: true })
-    tenant: string;
+    // @ManyToOne(() => Tenant, (tenant) => tenant.user)
+    @Column({ name: 'tenant' })
+    tenant: string; 
 
     @OneToOne(() => UserPassword, (userPassword) => userPassword.user, { eager: true })
     userPassword: UserPassword;
@@ -41,5 +42,7 @@ export class User {
 
     @UpdateDateColumn({ name: 'updated_at' }) // Recommended 
     updatedAt: Date;
+    
+    tenants: Tenant;
  
 }  
