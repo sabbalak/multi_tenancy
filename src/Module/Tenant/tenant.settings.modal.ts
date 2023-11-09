@@ -1,33 +1,40 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Tenant } from "./tenant.modal";
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Tenant } from './tenant.modal';
 
 export class Locale {
-    language: string;
+  language: string;
 }
 
 @Entity('tenant-settings')
 export class TenantSettings {
+  @PrimaryColumn('uuid')
+  @OneToOne(() => Tenant, (tenant) => tenant.tenantSettings, { eager: false })
+  tenant: string;
 
-    @PrimaryColumn('uuid')
-    @OneToOne(() => Tenant, (tenant) => tenant.tenantSettings, { eager: false })
-    tenant: string;
+  @Column()
+  currency: string;
 
-    @Column()
-    currency: string;
- 
-    @Column({
-        type: 'json',
-        nullable: false, 
-    })
-    locale: Locale;
- 
-    @Column({ name: 'agreement_doc'})
-    agreementDoc: string;
+  @Column({
+    type: 'json',
+    nullable: false,
+  })
+  locale: Locale;
 
-    @CreateDateColumn({ name: 'created_at' }) // Recommended
-    createdAt: Date;
+  @Column({ name: 'agreement_doc' })
+  agreementDoc: string;
 
-    @UpdateDateColumn({ name: 'updated_at' }) // Recommended 
-    updatedAt: Date;
+  @CreateDateColumn({ name: 'created_at' }) // Recommended
+  createdAt: Date;
 
+  @UpdateDateColumn({ name: 'updated_at' }) // Recommended
+  updatedAt: Date;
 }

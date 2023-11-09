@@ -1,11 +1,9 @@
-import { Length, IsNotEmpty, IsEmail } from "@nestjs/class-validator";
+import { Length, IsNotEmpty, IsEmail } from '@nestjs/class-validator';
 
-export class LoginDto { 
+export class LoginDto {
+  @IsNotEmpty()
+  username: string;
 
-    @IsNotEmpty()
-    username: string; 
-    
-    @IsNotEmpty()
-    password: string;
- 
+  @IsNotEmpty()
+  password: string;
 }

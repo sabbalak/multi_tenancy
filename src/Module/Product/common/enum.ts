@@ -1,5 +1,5 @@
 export enum ProductCategory {
-    MOBILE = 'MOBILE',
-    LAPTOP = 'LAPTOP',
-    WATCH = 'WATCH',
-  }
+  MOBILE = 'MOBILE',
+  LAPTOP = 'LAPTOP',
+  WATCH = 'WATCH',
+}

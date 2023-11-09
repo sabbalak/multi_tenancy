@@ -6,32 +6,29 @@ import { TenantSettings } from './tenant.settings.modal';
 
 @Injectable()
 export class TenantService {
-  
-    constructor(private readonly tenantRepository: TenantRepository) {}
+  constructor(private readonly tenantRepository: TenantRepository) {}
 
-    createTenant(obj: CreateTenantDto): Promise<Tenant> {
-        return this.tenantRepository.createTenant(obj);
-    }
+  createTenant(obj: CreateTenantDto): Promise<Tenant> {
+    return this.tenantRepository.createTenant(obj);
+  }
 
-    getTenantById(id: string): Promise<Tenant> {
-        return this.tenantRepository.getTenantById(id);
-    }
+  getTenantById(id: string): Promise<Tenant> {
+    return this.tenantRepository.getTenantById(id);
+  }
 
-    getTenantSettingById(id: string): Promise<TenantSettings> {
-        return this.tenantRepository.getTenantSettingById(id);
-    }
+  getTenantSettingById(id: string): Promise<TenantSettings> {
+    return this.tenantRepository.getTenantSettingById(id);
+  }
 
-    updateTenant(id: string, obj: UpdateTenantDto): Promise<Tenant> {
-        return this.tenantRepository.updateTenant(id, obj);
-    }
+  updateTenant(id: string, obj: UpdateTenantDto): Promise<Tenant> {
+    return this.tenantRepository.updateTenant(id, obj);
+  }
 
-    getTenants(): Promise<Tenant[]> {
-        return this.tenantRepository.getTenants();
-    }
+  getTenants(): Promise<Tenant[]> {
+    return this.tenantRepository.getTenants();
+  }
 
-    deleteTenantById(id: string): Promise<void> {
-        return this.tenantRepository.deleteTenantById(id);
-    }
-
+  deleteTenantById(id: string): Promise<void> {
+    return this.tenantRepository.deleteTenantById(id);
+  }
 }
- 

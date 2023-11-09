@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('/api');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.useGlobalInterceptors( new TransformInterceptor())
+  app.useGlobalInterceptors(new TransformInterceptor());
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -16,4 +16,4 @@ async function bootstrap() {
   });
   await app.listen(3000);
 }
-bootstrap(); 
+bootstrap();

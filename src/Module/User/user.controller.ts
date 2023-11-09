@@ -12,12 +12,17 @@ import {
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
-import { CreateUserDto, TenantIdDto, UpdateUserDto, UpdateUserPasswordDto } from './common/dto';
+import {
+  CreateUserDto,
+  TenantIdDto,
+  UpdateUserDto,
+  UpdateUserPasswordDto,
+} from './common/dto';
 import { User } from './user.modal';
 
 @Controller('/tenants/:tenantId/users')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   @Get()
   getUsers(@Param() query: TenantIdDto): Promise<User[]> {
@@ -30,17 +35,26 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Param() query: TenantIdDto, @Body() body: CreateUserDto): Promise<User> {
+  createUser(
+    @Param() query: TenantIdDto,
+    @Body() body: CreateUserDto,
+  ): Promise<User> {
     return this.userService.createUser(query, body);
   }
 
   @Put('/:id')
-  updateUser(@Param() query: TenantIdDto, @Body() body: UpdateUserDto): Promise<User> {
+  updateUser(
+    @Param() query: TenantIdDto,
+    @Body() body: UpdateUserDto,
+  ): Promise<User> {
     return this.userService.updateUser(query, body);
   }
 
   @Put('/:id/password')
-  updateUserPassword(@Param() query: TenantIdDto, @Body() body: UpdateUserPasswordDto): Promise<void> {
+  updateUserPassword(
+    @Param() query: TenantIdDto,
+    @Body() body: UpdateUserPasswordDto,
+  ): Promise<void> {
     return this.userService.updateUserPassword(query, body);
   }
 
@@ -56,5 +70,4 @@ export class UserController {
   // ): Product {
   //   return this.productService.updateProductStatus(id, category);
   // }
-
 }

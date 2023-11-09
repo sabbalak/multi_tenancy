@@ -20,25 +20,25 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
     ConfigModule,
     passportModule,
     JwtModule.registerAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService) => ({
-            secret: configService.get('JWT_SECRET_KEY'),
-            signOptions: {
-                expiresIn: +configService.get('JWT_EXPIRATION_IN_SECONDS'),
-            }, 
-        }),
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET_KEY'),
+        signOptions: {
+          expiresIn: +configService.get('JWT_EXPIRATION_IN_SECONDS'),
+        },
+      }),
     }),
     TypeOrmModule.forFeature([
-        User,
-        UserPassword,
-        Tenant,
-        TenantSettings,
-        TenantRepository
+      User,
+      UserPassword,
+      Tenant,
+      TenantSettings,
+      TenantRepository,
     ]),
   ],
-  controllers: [ AuthController],
+  controllers: [AuthController],
   providers: [AuthService, UserRepository, JwtStrategy],
   exports: [JwtStrategy, passportModule],
 })
-export class  AuthModule {}
+export class AuthModule {}

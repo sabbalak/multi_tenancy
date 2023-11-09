@@ -1,48 +1,60 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, Unique, JoinTable, ManyToOne } from "typeorm";
-import { UserRole, UserStatus } from "./common/enum";
-import { Tenant } from "../Tenant/tenant.modal";
-import { UserPassword } from "./user.password.modal";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  JoinColumn,
+  OneToOne,
+  Unique,
+  JoinTable,
+  ManyToOne,
+} from 'typeorm';
+import { UserRole, UserStatus } from './common/enum';
+import { Tenant } from '../Tenant/tenant.modal';
+import { UserPassword } from './user.password.modal';
 
 export class Profile {
-    address: string;
-    email: string;
-    mobile: string;
+  address: string;
+  email: string;
+  mobile: string;
 }
 
 @Entity('users')
-@Unique(["name"])
+@Unique(['name'])
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    role: UserRole;
+  @Column()
+  role: UserRole;
 
-    @Column({
-        type: 'json',
-        nullable: false,
-    })
-    profile: Profile;
+  @Column({
+    type: 'json',
+    nullable: false,
+  })
+  profile: Profile;
 
-    // @ManyToOne(() => Tenant, (tenant) => tenant.user)
-    @Column({ name: 'tenant' })
-    tenant: string; 
+  // @ManyToOne(() => Tenant, (tenant) => tenant.user)
+  @Column({ name: 'tenant' })
+  tenant: string;
 
-    @OneToOne(() => UserPassword, (userPassword) => userPassword.user, { eager: true })
-    userPassword: UserPassword;
-    
-    @Column()
-    status: UserStatus;
+  @OneToOne(() => UserPassword, (userPassword) => userPassword.user, {
+    eager: true,
+  })
+  userPassword: UserPassword;
 
-    @CreateDateColumn({ name: 'created_at' }) // Recommended
-    createdAt: Date;
+  @Column()
+  status: UserStatus;
 
-    @UpdateDateColumn({ name: 'updated_at' }) // Recommended 
-    updatedAt: Date;
-    
-    tenants: Tenant;
- 
-}  
+  @CreateDateColumn({ name: 'created_at' }) // Recommended
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' }) // Recommended
+  updatedAt: Date;
+
+  tenants: Tenant;
+}

@@ -16,10 +16,9 @@ import { Tenant } from './common/interface';
 import { CreateTenantDto, UpdateTenantDto } from './common/dto';
 import { TenantSettings } from './tenant.settings.modal';
 
-
 @Controller('tenants')
 export class TenantController {
-  constructor(private tenantService: TenantService) { }
+  constructor(private tenantService: TenantService) {}
 
   @Get()
   getTenants(): Promise<Tenant[]> {
@@ -42,7 +41,10 @@ export class TenantController {
   }
 
   @Put('/:id')
-  updateTenant(@Param('id') id: string, @Body() body: UpdateTenantDto): Promise<Tenant> {
+  updateTenant(
+    @Param('id') id: string,
+    @Body() body: UpdateTenantDto,
+  ): Promise<Tenant> {
     return this.tenantService.updateTenant(id, body);
   }
 
@@ -58,5 +60,4 @@ export class TenantController {
   // ): Product {
   //   return this.productService.updateProductStatus(id, category);
   // }
-
 }

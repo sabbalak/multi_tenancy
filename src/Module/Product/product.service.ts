@@ -1,22 +1,19 @@
-
-
-  import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { v4 as uuid } from 'uuid';
 import { CreateProductDto, GetProductFilterDto } from './common/dto';
 import { Product } from './common/interface';
 import { ProductCategory } from './common/enum';
 
-
 @Injectable()
 export class ProductService {
   private products: Product[] = [
     {
-        id: "26e8dd9c-df7a-48f4-b85e-55f1e3435e9c",
-        title: "I-Phone",
-        description: "Take Test 1",
-        category: ProductCategory.MOBILE
-    }
+      id: '26e8dd9c-df7a-48f4-b85e-55f1e3435e9c',
+      title: 'I-Phone',
+      description: 'Take Test 1',
+      category: ProductCategory.MOBILE,
+    },
   ];
 
   getAllProduct(): Product[] {
@@ -30,12 +27,15 @@ export class ProductService {
 
     // do something with status
     if (category) {
-        products = products.filter((product) => product.category === category);
+      products = products.filter((product) => product.category === category);
     }
 
     if (search) {
-        products = products.filter((product) => {
-        if (product.title.includes(search) || product.description.includes(search)) {
+      products = products.filter((product) => {
+        if (
+          product.title.includes(search) ||
+          product.description.includes(search)
+        ) {
           return true;
         }
 
@@ -57,7 +57,7 @@ export class ProductService {
       id: uuid(),
       title,
       description,
-      category
+      category,
     };
 
     this.products.push(product);
@@ -82,4 +82,3 @@ export class ProductService {
     return product;
   }
 }
- 

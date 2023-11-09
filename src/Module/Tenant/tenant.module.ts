@@ -7,13 +7,8 @@ import { Tenant } from './tenant.modal';
 import { TenantSettings } from './tenant.settings.modal';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-        Tenant,
-        TenantSettings,
-    ]),
-  ],
-  controllers: [ TenantController],
-  providers: [ TenantService, TenantRepository],
+  imports: [TypeOrmModule.forFeature([Tenant, TenantSettings])],
+  controllers: [TenantController],
+  providers: [TenantService, TenantRepository],
 })
-export class  TenantModule {}
+export class TenantModule {}
