@@ -3,7 +3,6 @@ import {
   IsEnum,
   IsOptional,
   ValidateNested,
-  IsDefined,
   IsUUID,
 } from '@nestjs/class-validator';
 import { UserRole, UserStatus } from './enum';

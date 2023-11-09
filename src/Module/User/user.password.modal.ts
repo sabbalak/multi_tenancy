@@ -1,17 +1,12 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
   OneToOne,
   Unique,
-  JoinTable,
-  ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
-import { UserRole, UserStatus } from './common/enum';
 import { User } from './user.modal';
 import * as bcrypt from 'bcryptjs';
 

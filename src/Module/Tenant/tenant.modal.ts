@@ -7,8 +7,6 @@ import {
   JoinColumn,
   OneToOne,
   Unique,
-  JoinTable,
-  ManyToOne,
   OneToMany,
 } from 'typeorm';
 import { TenantStatus } from './common/enum';

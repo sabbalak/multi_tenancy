@@ -4,11 +4,8 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
   OneToOne,
   Unique,
-  JoinTable,
-  ManyToOne,
 } from 'typeorm';
 import { UserRole, UserStatus } from './common/enum';
 import { Tenant } from '../Tenant/tenant.modal';

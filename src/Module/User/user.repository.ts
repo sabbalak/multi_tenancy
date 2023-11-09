@@ -6,7 +6,7 @@ import {
 import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { User } from './user.modal';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { UserPassword } from './user.password.modal';
 import {
   CreateUserDto,
