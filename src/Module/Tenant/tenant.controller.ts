@@ -9,45 +9,108 @@ import {
 } from '@nestjs/common';
 
 import { TenantService } from './tenant.service';
-import { Tenant } from './common/interface';
 import { CreateTenantDto, UpdateTenantDto } from './common/dto';
-import { TenantSettings } from './tenant.settings.modal';
+import { ResponseDto } from 'src/common/response-dto';
+import { SUCCESS_MESSAGE, RESPONSE_CODE } from 'src/common/response-data';
 
 @Controller('tenants')
 export class TenantController {
   constructor(private tenantService: TenantService) {}
 
   @Get()
-  getTenants(): Promise<Tenant[]> {
-    return this.tenantService.getTenants();
+  async getTenants(): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.tenantService.getTenants();
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+
+    return returnResponse;
   }
 
   @Get('/:id')
-  getTenantById(@Param('id') id: string): Promise<Tenant> {
-    return this.tenantService.getTenantById(id);
+  async getTenantById(@Param('id') id: string): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.tenantService.getTenantById(id);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+
+    return returnResponse;
   }
 
   @Get('/:id/settings')
-  getTenantSettingById(@Param('id') id: string): Promise<TenantSettings> {
-    return this.tenantService.getTenantSettingById(id);
+  async getTenantSettingById(@Param('id') id: string): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.tenantService.getTenantSettingById(id);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+
+    return returnResponse;
   }
 
   @Post()
-  createTenant(@Body() body: CreateTenantDto): Promise<Tenant> {
-    return this.tenantService.createTenant(body);
+  async createTenant(@Body() body: CreateTenantDto): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.CREATE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.tenantService.createTenant(body);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Put('/:id')
-  updateTenant(
+  async updateTenant(
     @Param('id') id: string,
     @Body() body: UpdateTenantDto,
-  ): Promise<Tenant> {
-    return this.tenantService.updateTenant(id, body);
+  ): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.UPDATE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.tenantService.updateTenant(id, body);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Delete('/:id')
-  deleteTenantById(@Param('id') id: string): Promise<void> {
-    return this.tenantService.deleteTenantById(id);
+  deleteTenantById(@Param('id') id: string): ResponseDto {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.DELETE_MESSAGE,
+    };
+    try {
+      returnResponse.data = this.tenantService.deleteTenantById(id);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   // @Patch('/:id/category')

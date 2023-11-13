@@ -1,3 +1,6 @@
 {
-    "recommendations": []
+    "recommendations": [],
+    "editor": {
+        "insertSpaces": false
+    }
 }

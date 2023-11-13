@@ -77,7 +77,11 @@ export class TenantRepository extends Repository<Tenant> {
         .createQueryBuilder('tenant-settings')
         .andWhere('tenant-settings.tenant = :id', { id: id })
         .getOne();
-      return tenantSettings;
+      if (tenantSettings) {
+        return tenantSettings;
+      } else {
+        throw new NotFoundException(`Tenant Setting ${id} does not exist`);
+      }
     } catch (err) {
       throw new NotFoundException(`Tenant Setting ${id} does not exist`);
     }
