@@ -36,7 +36,7 @@ export class User {
   profile: Profile;
 
   // @ManyToOne(() => Tenant, (tenant) => tenant.user)
-  @Column({ name: 'tenant' })
+  @Column({ name: 'tenantId' })
   tenant: string;
 
   @OneToOne(() => UserPassword, (userPassword) => userPassword.user, {

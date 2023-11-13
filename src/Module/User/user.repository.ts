@@ -166,55 +166,64 @@ export class UserRepository extends Repository<User> {
     tenant: TenantIdDto,
     id: string,
     obj: UpdateUserPasswordDto,
-  ): Promise<void> {
+  ): Promise<User> {
     const { password } = obj;
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await this.hasPassword(password, salt);
     try {
       await this.userPassword
         .createQueryBuilder()
         .update('users-password', 'up')
         .andWhere('user = :id', { id })
-        .set({
-          ...(password ? { password } : {}),
-        })
+        .set({ salt: salt, password: hashPassword })
         .execute();
-      // return await this.getUserById(tenant, id);
+      return await this.getUserById(tenant, id);
     } catch (err) {
+      console.log(err);
       throw new NotFoundException(`User ${id} does not exist`);
     }
   }
 
   async deleteUserById(tenant: TenantIdDto, id: string): Promise<void> {
-    const tenants = await this.createQueryBuilder('users')
-      .delete()
-      .andWhere('users.tenantId = :tenantId', { tenantId: tenant.tenantId })
-      .andWhere('id = :id', { id })
-      .execute();
-    const userPassword = await this.userPassword
-      .createQueryBuilder('users-password')
-      .delete()
-      .andWhere('user = :id', { id })
-      .execute();
+    try {
+      const tenants = await this.createQueryBuilder('users')
+        .delete()
+        .andWhere('users.tenantId = :tenantId', { tenantId: tenant.tenantId })
+        .andWhere('id = :id', { id })
+        .execute();
+      const userPassword = await this.userPassword
+        .createQueryBuilder('users-password')
+        .delete()
+        .andWhere('user = :id', { id })
+        .execute();
 
-    if (tenants.affected === 0 || userPassword.affected === 0) {
-      throw new NotFoundException(`users ${id} does not exist`);
+      if (tenants.affected === 0 || userPassword.affected === 0) {
+        throw new NotFoundException(`users ${id} does not exist`);
+      }
+    } catch (err) {
+      throw new NotFoundException(`User ${id} does not exist`);
     }
   }
 
   async geUsers(tenant: TenantIdDto): Promise<User[]> {
-    const tenants = await this.createQueryBuilder('users')
-      .andWhere('users.tenantId = :tenantId', { tenantId: tenant.tenantId })
-      .getMany();
-    const tenantsById = tenants.map((tenant) => tenant.id);
-    console.log(tenantsById.map((a) => `'${a}'`).join(','));
-    const userPassword = await this.userPassword
-      .createQueryBuilder('users-password')
-      .andWhere(`user IN (${tenantsById.map((a) => `'${a}'`).join(',')})`)
-      .getMany();
-
-    tenants.forEach(function (item) {
-      item.userPassword = userPassword.find((a) => a.user === item.id);
-    });
-    return tenants;
+    try {
+      const tenants = await this.createQueryBuilder('users')
+        .andWhere('users.tenantId = :tenantId', { tenantId: tenant.tenantId })
+        .getMany();
+      const tenantsById = tenants.map((tenant) => tenant.id);
+      const userPassword = await this.userPassword
+        .createQueryBuilder('users-password')
+        .andWhere(`user IN (${tenantsById.map((a) => `'${a}'`).join(',')})`)
+        .getMany();
+      tenants.forEach(function (item) {
+        item.userPassword = userPassword.find((a) => a.user === item.id);
+      });
+      return tenants;
+    } catch (err) {
+      throw new NotFoundException(
+        `No user found for the tenant id ${tenant.tenantId}`,
+      );
+    }
   }
 
   async validateUserPassword(body: LoginDto): Promise<string> {

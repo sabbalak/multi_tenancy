@@ -16,48 +16,113 @@ import {
   UpdateUserPasswordDto,
 } from './common/dto';
 import { User } from './user.modal';
+import { ResponseDto } from 'src/common/response-dto';
+import { RESPONSE_CODE, SUCCESS_MESSAGE } from 'src/common/response-data';
 
 @Controller('/tenants/:tenantId/users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   @Get()
-  getUsers(@Param() query: TenantIdDto): Promise<User[]> {
-    return this.userService.getUsers(query);
+  async getUsers(@Param() query: TenantIdDto): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.userService.getUsers(query);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Get('/:id')
-  getTenantById(@Param() query: TenantIdDto): Promise<User> {
-    return this.userService.getUserById(query);
+  async getTenantById(@Param() query: TenantIdDto): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.userService.getUserById(query);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Post()
-  createUser(
+  async createUser(
     @Param() query: TenantIdDto,
     @Body() body: CreateUserDto,
-  ): Promise<User> {
-    return this.userService.createUser(query, body);
+  ): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.CREATE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.userService.createUser(query, body);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Put('/:id')
-  updateUser(
+  async updateUser(
     @Param() query: TenantIdDto,
     @Body() body: UpdateUserDto,
-  ): Promise<User> {
-    return this.userService.updateUser(query, body);
+  ): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.UPDATE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.userService.updateUser(query, body);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Put('/:id/password')
-  updateUserPassword(
+  async updateUserPassword(
     @Param() query: TenantIdDto,
     @Body() body: UpdateUserPasswordDto,
-  ): Promise<void> {
-    return this.userService.updateUserPassword(query, body);
+  ): Promise<ResponseDto> {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.UPDATE_MESSAGE,
+    };
+    try {
+      returnResponse.data = await this.userService.updateUserPassword(
+        query,
+        body,
+      );
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   @Delete('/:id')
-  deleteUserById(@Param() query: TenantIdDto): Promise<void> {
-    return this.userService.deleteUserById(query);
+  deleteUserById(@Param() query: TenantIdDto): ResponseDto {
+    const returnResponse: ResponseDto = {
+      statusCode: RESPONSE_CODE.SUCCESS,
+      message: SUCCESS_MESSAGE.DELETE_MESSAGE,
+    };
+    try {
+      returnResponse.data = this.userService.deleteUserById(query);
+    } catch (error) {
+      returnResponse.message = error.response.message;
+      returnResponse.statusCode = error.response.statusCode;
+    }
+    return returnResponse;
   }
 
   // @Patch('/:id/category')
