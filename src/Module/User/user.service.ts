@@ -10,7 +10,7 @@ import { User } from './user.modal';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) { }
+  constructor(private readonly userRepository: UserRepository) {}
 
   createUser(query: TenantIdDto, obj: CreateUserDto): Promise<User> {
     return this.userRepository.createUser(query, obj);

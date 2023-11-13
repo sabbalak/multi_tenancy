@@ -15,7 +15,6 @@ import {
   UpdateUserDto,
   UpdateUserPasswordDto,
 } from './common/dto';
-import { User } from './user.modal';
 import { ResponseDto } from 'src/common/response-dto';
 import { RESPONSE_CODE, SUCCESS_MESSAGE } from 'src/common/response-data';
 
