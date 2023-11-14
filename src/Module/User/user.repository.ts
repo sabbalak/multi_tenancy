@@ -98,11 +98,6 @@ export class UserRepository extends Repository<User> {
       tenant.tenantSettings = tenantSettings;
       users.userPassword = userPassword;
       users.tenants = tenant;
-
-      // console.log('id', '32e81ee8-e814-43c5-8723-79593c26397e')
-      // console.log(await this.tenantRepository.getTenantById('32e81ee8-e814-43c5-8723-79593c26397e'))
-      // console.log('id', '32e81ee8-e814-43c5-8723-79593c26397e')
-
       return users;
     } catch (err) {
       throw new NotFoundException(`User ${username} does not exist`);
@@ -179,7 +174,6 @@ export class UserRepository extends Repository<User> {
         .execute();
       return await this.getUserById(tenant, id);
     } catch (err) {
-      console.log(err);
       throw new NotFoundException(`User ${id} does not exist`);
     }
   }

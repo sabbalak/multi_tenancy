@@ -12,14 +12,11 @@ import { GetUser } from '../Auth/get.user.decorator';
 export class ProductController {
   constructor(private productService: ProductService) {}
 
-  // @Get()
-  // getProduct(@Query() filterDto: GetProductFilterDto): Product[] {
-  //   if (Object.keys(filterDto).length) {
-  //     return this.productService.getProductWithFilters(filterDto);
-  //   } else {
-  //     return this.productService.getAllProduct();
-  //   }
-  // }
+  @Get()
+  getProduct(@GetUser() user: User): Product[] {
+    console.log('user', user);
+    return this.productService.getAllProduct();
+  }
 
   @Get('/:id')
   getProductById(@Param('id') id: string, @GetUser() user: User): Product {

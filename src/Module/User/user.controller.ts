@@ -20,7 +20,7 @@ import { RESPONSE_CODE, SUCCESS_MESSAGE } from 'src/common/response-data';
 
 @Controller('/tenants/:tenantId/users')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   @Get()
   async getUsers(@Param() query: TenantIdDto): Promise<ResponseDto> {

@@ -25,7 +25,7 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET_KEY'),
         signOptions: {
-          expiresIn: +configService.get('JWT_EXPIRATION_IN_SECONDS'),
+          expiresIn: configService.get('JWT_EXPIRATION_IN_SECONDS'),
         },
       }),
     }),

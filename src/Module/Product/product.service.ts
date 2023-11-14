@@ -25,7 +25,6 @@ export class ProductService {
 
     let products = this.getAllProduct();
 
-    // do something with status
     if (category) {
       products = products.filter((product) => product.category === category);
     }

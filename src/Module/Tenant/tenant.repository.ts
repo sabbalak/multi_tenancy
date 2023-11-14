@@ -55,7 +55,6 @@ export class TenantRepository extends Repository<Tenant> {
   }
 
   public async getTenantById(id: string): Promise<Tenant> {
-    console.log('id', id);
     try {
       const tenants = await this.createQueryBuilder('tenants')
         .andWhere('tenants.id = :id', { id })
@@ -140,7 +139,6 @@ export class TenantRepository extends Repository<Tenant> {
   async getTenants(): Promise<Tenant[]> {
     const tenants = await this.createQueryBuilder('tenants').getMany();
     const tenantsById = tenants.map((tenant) => tenant.id);
-    console.log(tenantsById.map((a) => `'${a}'`).join(','));
     const tenantSettings = await this.tenantSettings
       .createQueryBuilder('tenant-settings')
       .andWhere(`tenant IN (${tenantsById.map((a) => `'${a}'`).join(',')})`)
