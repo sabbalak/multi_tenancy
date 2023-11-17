@@ -120,22 +120,6 @@ export class TenantRepository extends Repository<Tenant> {
     }
   }
 
-  async deleteTenantById(id: string): Promise<void> {
-    const tenants = await this.createQueryBuilder('tenants')
-      .delete()
-      .andWhere('id = :id', { id })
-      .execute();
-    const tenantSettings = await this.tenantSettings
-      .createQueryBuilder('tenant-settings')
-      .delete()
-      .andWhere('tenant = :id', { id })
-      .execute();
-
-    if (tenants.affected === 0 || tenantSettings.affected === 0) {
-      throw new NotFoundException(`tenant ${id} does not exist`);
-    }
-  }
-
   async getTenants(): Promise<Tenant[]> {
     const tenants = await this.createQueryBuilder('tenants').getMany();
     const tenantsById = tenants.map((tenant) => tenant.id);
@@ -148,5 +132,32 @@ export class TenantRepository extends Repository<Tenant> {
       item.tenantSettings = tenantSettings.find((a) => a.tenant === item.id);
     });
     return tenants;
+  }
+
+  async deleteTenantById(id: string): Promise<void> {
+    try {
+      const tenants = await this.createQueryBuilder('tenants')
+        .andWhere('tenants.id = :id', { id })
+        .getOne();
+      const tenantSettings = await this.tenantSettings
+        .createQueryBuilder('tenant-settings')
+        .andWhere('tenant-settings.tenant = :id', { id: id })
+        .getOne();
+      if (tenants && tenantSettings) {
+        await this.tenantSettings
+          .createQueryBuilder('tenant-settings')
+          .delete()
+          .andWhere('tenant = :id', { id })
+          .execute();
+        await this.createQueryBuilder('tenants')
+          .delete()
+          .andWhere('id = :id', { id })
+          .execute();
+      } else {
+        throw new NotFoundException(`tenant ${id} does not exist`);
+      }
+    } catch (error) {
+      throw new NotFoundException(`tenant ${id} does not exist`);
+    }
   }
 }

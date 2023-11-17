@@ -44,9 +44,14 @@ export class UserRepository extends Repository<User> {
     return await bcrypt.hash(password, salt);
   }
 
-  async createUser(query: TenantIdDto, obj: CreateUserDto): Promise<User> {
+  async createUser(query: TenantIdDto, obj: CreateUserDto): Promise<any> {
     const { name, role, profile, password, username } = obj;
     try {
+      const isTenant = await this.checkTenantById(query.tenantId);
+      if (!isTenant) {
+        throw new NotFoundException(`Tenant ${query.tenantId} does not exist`);
+      }
+
       const salt = await bcrypt.genSalt();
       const UserBase = this.create({
         name,
@@ -68,7 +73,7 @@ export class UserRepository extends Repository<User> {
 
       return UserBase;
     } catch (err) {
-      throw new ConflictException(`${name} already exists`);
+      throw new ConflictException(err.message);
     }
   }
 
@@ -106,6 +111,11 @@ export class UserRepository extends Repository<User> {
 
   async getUserById(tenant: TenantIdDto, id: string): Promise<User> {
     try {
+      const isTenant = await this.checkTenantById(tenant.tenantId);
+      if (!isTenant) {
+        throw new NotFoundException(`Tenant ${tenant.tenantId} does not exist`);
+      }
+
       const users = await this.createQueryBuilder('users')
         .andWhere('users.tenantId = :tenantId', { tenantId: tenant.tenantId })
         .andWhere('users.id = :id', { id })
@@ -117,7 +127,7 @@ export class UserRepository extends Repository<User> {
       users.userPassword = tenantSettings;
       return users;
     } catch (err) {
-      throw new NotFoundException(`User ${id} does not exist`);
+      throw new ConflictException(err.message);
     }
   }
 
@@ -128,6 +138,11 @@ export class UserRepository extends Repository<User> {
   ): Promise<User> {
     const { role, profile, password } = obj;
     try {
+      const isTenant = await this.checkTenantById(tenant.tenantId);
+      if (!isTenant) {
+        throw new NotFoundException(`Tenant ${tenant.tenantId} does not exist`);
+      }
+
       if (role || profile) {
         await this.createQueryBuilder()
           .update('users')
@@ -153,7 +168,7 @@ export class UserRepository extends Repository<User> {
 
       return await this.getUserById(tenant, id);
     } catch (err) {
-      throw new NotFoundException(`User ${id} does not exist`);
+      throw new ConflictException(err.message);
     }
   }
 
@@ -201,6 +216,11 @@ export class UserRepository extends Repository<User> {
 
   async geUsers(tenant: TenantIdDto): Promise<User[]> {
     try {
+      const isTenant = await this.checkTenantById(tenant.tenantId);
+      if (!isTenant) {
+        throw new NotFoundException(`Tenant ${tenant.tenantId} does not exist`);
+      }
+
       const tenants = await this.createQueryBuilder('users')
         .andWhere('users.tenantId = :tenantId', { tenantId: tenant.tenantId })
         .getMany();
@@ -214,9 +234,7 @@ export class UserRepository extends Repository<User> {
       });
       return tenants;
     } catch (err) {
-      throw new NotFoundException(
-        `No user found for the tenant id ${tenant.tenantId}`,
-      );
+      throw new ConflictException(err.message);
     }
   }
 
@@ -236,5 +254,13 @@ export class UserRepository extends Repository<User> {
     const payload: JwtPayload = { username };
     const accessToken = await this.jwtService.sign(payload);
     return { accessToken };
+  }
+
+  async checkTenantById(id: string): Promise<Tenant | null> {
+    const tenants = await this.tenant
+      .createQueryBuilder('tenants')
+      .andWhere('tenants.id = :id', { id: id })
+      .getOne();
+    return tenants;
   }
 }

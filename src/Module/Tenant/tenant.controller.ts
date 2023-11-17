@@ -99,13 +99,13 @@ export class TenantController {
   }
 
   @Delete('/:id')
-  deleteTenantById(@Param('id') id: string): ResponseDto {
+  async deleteTenantById(@Param('id') id: string): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
       message: SUCCESS_MESSAGE.DELETE_MESSAGE,
     };
     try {
-      returnResponse.data = this.tenantService.deleteTenantById(id);
+      await this.tenantService.deleteTenantById(id);
     } catch (error) {
       returnResponse.message = error.response.message;
       returnResponse.statusCode = error.response.statusCode;

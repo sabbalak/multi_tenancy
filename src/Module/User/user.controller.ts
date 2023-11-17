@@ -123,12 +123,4 @@ export class UserController {
     }
     return returnResponse;
   }
-
-  // @Patch('/:id/category')
-  // updateProductStatus(
-  //   @Param('id') id: string,
-  //   @Body('category') category: ProductCategory,
-  // ): Product {
-  //   return this.productService.updateProductStatus(id, category);
-  // }
 }
