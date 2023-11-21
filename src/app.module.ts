@@ -9,6 +9,7 @@ import { TenantModule } from './module/Tenant/tenant.module';
 import { UserModule } from './module/User/user.module';
 import { AuthModule } from './module/Auth/auth.module';
 import { ProductModule } from './module/Product/product.module';
+import { FeaturedAgentModule } from './module/featured_agent/featured_agent.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ProductModule } from './module/Product/product.module';
     UserModule,
     AuthModule,
     ProductModule,
+    FeaturedAgentModule,
   ],
   controllers: [],
   providers: [],

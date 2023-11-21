@@ -16,7 +16,7 @@ import {
   UpdateUserPasswordDto,
 } from './common/dto';
 import { ResponseDto } from 'src/common/response-dto';
-import { RESPONSE_CODE, SUCCESS_MESSAGE } from 'src/common/response-data';
+import { RESPONSE_CODE, MESSAGE } from 'src/common/response-data';
 
 @Controller('/tenants/:tenantId/users')
 export class UserController {
@@ -26,7 +26,7 @@ export class UserController {
   async getUsers(@Param() query: TenantIdDto): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+      message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
       returnResponse.data = await this.userService.getUsers(query);
@@ -41,7 +41,7 @@ export class UserController {
   async getTenantById(@Param() query: TenantIdDto): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+      message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
       returnResponse.data = await this.userService.getUserById(query);
@@ -59,7 +59,7 @@ export class UserController {
   ): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.CREATE_MESSAGE,
+      message: MESSAGE.CREATE_MESSAGE,
     };
     try {
       returnResponse.data = await this.userService.createUser(query, body);
@@ -77,7 +77,7 @@ export class UserController {
   ): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.UPDATE_MESSAGE,
+      message: MESSAGE.UPDATE_MESSAGE,
     };
     try {
       returnResponse.data = await this.userService.updateUser(query, body);
@@ -95,7 +95,7 @@ export class UserController {
   ): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.UPDATE_MESSAGE,
+      message: MESSAGE.UPDATE_MESSAGE,
     };
     try {
       returnResponse.data = await this.userService.updateUserPassword(
@@ -113,7 +113,7 @@ export class UserController {
   deleteUserById(@Param() query: TenantIdDto): ResponseDto {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.DELETE_MESSAGE,
+      message: MESSAGE.DELETE_MESSAGE,
     };
     try {
       returnResponse.data = this.userService.deleteUserById(query);

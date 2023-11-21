@@ -11,7 +11,7 @@ import {
 import { TenantService } from './tenant.service';
 import { CreateTenantDto, UpdateTenantDto } from './common/dto';
 import { ResponseDto } from 'src/common/response-dto';
-import { SUCCESS_MESSAGE, RESPONSE_CODE } from 'src/common/response-data';
+import { MESSAGE, RESPONSE_CODE } from 'src/common/response-data';
 
 @Controller('tenants')
 export class TenantController {
@@ -21,7 +21,7 @@ export class TenantController {
   async getTenants(): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+      message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
       returnResponse.data = await this.tenantService.getTenants();
@@ -37,7 +37,7 @@ export class TenantController {
   async getTenantById(@Param('id') id: string): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+      message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
       returnResponse.data = await this.tenantService.getTenantById(id);
@@ -53,7 +53,7 @@ export class TenantController {
   async getTenantSettingById(@Param('id') id: string): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.RETRIVE_MESSAGE,
+      message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
       returnResponse.data = await this.tenantService.getTenantSettingById(id);
@@ -69,7 +69,7 @@ export class TenantController {
   async createTenant(@Body() body: CreateTenantDto): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.CREATE_MESSAGE,
+      message: MESSAGE.CREATE_MESSAGE,
     };
     try {
       returnResponse.data = await this.tenantService.createTenant(body);
@@ -87,7 +87,7 @@ export class TenantController {
   ): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.UPDATE_MESSAGE,
+      message: MESSAGE.UPDATE_MESSAGE,
     };
     try {
       returnResponse.data = await this.tenantService.updateTenant(id, body);
@@ -102,7 +102,7 @@ export class TenantController {
   async deleteTenantById(@Param('id') id: string): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
-      message: SUCCESS_MESSAGE.DELETE_MESSAGE,
+      message: MESSAGE.DELETE_MESSAGE,
     };
     try {
       await this.tenantService.deleteTenantById(id);

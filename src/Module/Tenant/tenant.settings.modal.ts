@@ -19,6 +19,9 @@ export class TenantSettings {
   tenant: string;
 
   @Column()
+  location: string;
+
+  @Column()
   currency: string;
 
   @Column({

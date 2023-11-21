@@ -1,4 +1,4 @@
-export const SUCCESS_MESSAGE = {
+export const MESSAGE = {
   RETRIVE_MESSAGE: 'data retrived successfully',
   CREATE_MESSAGE: 'data created successfully',
   UPDATE_MESSAGE: 'data updated successfully',
