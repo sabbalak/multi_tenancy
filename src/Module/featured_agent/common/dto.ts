@@ -43,3 +43,21 @@ export class CreateAgentDto {
   @IsOptional()
   rating: number;
 }
+
+export class UpdateAgentDto {
+  @IsOptional()
+  agentName: string;
+
+  @IsOptional()
+  @ValidateNested({ each: true, message: 'contact details must be object' })
+  contactDetails: ContactDetails;
+
+  @IsOptional()
+  websiteLink: string;
+
+  @IsOptional()
+  socialMediaLink: SocialMediaLinks;
+
+  @IsOptional()
+  rating: number;
+}
