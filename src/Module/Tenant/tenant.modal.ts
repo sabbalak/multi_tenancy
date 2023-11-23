@@ -9,7 +9,7 @@ import {
   Unique,
   OneToMany,
 } from 'typeorm';
-import { TenantStatus } from './common/enum';
+import { TenantStatus } from './../../common/enums';
 import { TenantSettings } from './tenant.settings.modal';
 import { User } from '../User/user.modal';
 

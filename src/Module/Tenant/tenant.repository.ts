@@ -6,7 +6,7 @@ import {
 import { DataSource, Repository } from 'typeorm';
 import { Tenant } from './tenant.modal';
 import { CreateTenantDto, UpdateTenantDto } from './common/dto';
-import { TenantStatus } from './common/enum';
+import { TenantStatus } from './../../common/enums';
 import { TenantSettings } from './tenant.settings.modal';
 import { InjectRepository } from '@nestjs/typeorm';
 

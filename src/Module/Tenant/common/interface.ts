@@ -1,4 +1,4 @@
-import { TenantStatus } from './enum';
+import { TenantStatus } from './../../../common/enums';
 
 export interface Billing {
   email: string;

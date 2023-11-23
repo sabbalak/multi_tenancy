@@ -1,0 +1,15 @@
+export enum TenantStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum ListingsStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum FURNISHING_TYPES {
+  UNFURNISHED = 'UNFURNISHED',
+  FURNISHED = 'FURNISHED',
+  SEMIFURNISHED = 'SEMIFURNISHED',
+}

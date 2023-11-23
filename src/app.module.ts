@@ -10,6 +10,7 @@ import { UserModule } from './module/User/user.module';
 import { AuthModule } from './module/Auth/auth.module';
 import { ProductModule } from './module/Product/product.module';
 import { FeaturedAgentModule } from './module/featured_agent/featured_agent.module';
+import { ListingsModule } from './module/listings/listing.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { FeaturedAgentModule } from './module/featured_agent/featured_agent.modu
     AuthModule,
     ProductModule,
     FeaturedAgentModule,
+    ListingsModule,
   ],
   controllers: [],
   providers: [],

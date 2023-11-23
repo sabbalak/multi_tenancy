@@ -4,7 +4,7 @@ import {
   IsOptional,
   ValidateNested,
 } from '@nestjs/class-validator';
-import { TenantStatus } from './enum';
+import { TenantStatus } from './../../../common/enums';
 
 export class Billing {
   email: string;

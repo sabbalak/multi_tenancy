@@ -52,7 +52,6 @@ export class FeatureAgentRepository extends Repository<FeatureAgent> {
   }
 
   async getAgentById(tenant: TenantIdDto, id: string): Promise<FeatureAgent> {
-    console.log('id:', id);
     try {
       const isTenant = await this.checkTenantById(tenant.tenantId);
       if (!isTenant) {

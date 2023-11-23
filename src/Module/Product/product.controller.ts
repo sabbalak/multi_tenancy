@@ -14,7 +14,7 @@ export class ProductController {
 
   @Get()
   getProduct(@GetUser() user: User): Product[] {
-    console.log('user', user);
+    console.log(user);
     return this.productService.getAllProduct();
   }
 
