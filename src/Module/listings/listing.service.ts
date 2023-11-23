@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../User/user.modal';
 import { CreateListingDto, TenantIdDto, UpdateListingDto } from './common/dto';
 import { Listing } from './listing.modal';
 import { ListingRepository } from './listing.repository';
@@ -8,12 +7,8 @@ import { ListingRepository } from './listing.repository';
 export class ListingsService {
   constructor(private listingRepository: ListingRepository) {}
 
-  createListing(
-    query: TenantIdDto,
-    obj: CreateListingDto,
-    user: User,
-  ): Promise<Listing> {
-    return this.listingRepository.createListing(query, obj, user);
+  createListing(query: TenantIdDto, obj: CreateListingDto): Promise<Listing> {
+    return this.listingRepository.createListing(query, obj);
   }
 
   getListing(query: TenantIdDto): Promise<Listing[]> {

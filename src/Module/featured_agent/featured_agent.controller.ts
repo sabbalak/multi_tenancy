@@ -39,7 +39,6 @@ export class FeaturedAgentController {
       message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
-      console.log('query:', query);
       returnResponse.data = await this.featureAgentService.getAgentByID(query);
     } catch (error) {
       returnResponse.message = error.response.message;

@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ListingsStatus } from 'src/common/enums';
 import { DataSource, Repository } from 'typeorm';
 import { Tenant } from '../Tenant/tenant.modal';
-import { User } from '../User/user.modal';
 import { CreateListingDto, TenantIdDto, UpdateListingDto } from './common/dto';
 import { Listing } from './listing.modal';
 
@@ -21,11 +20,7 @@ export class ListingRepository extends Repository<Listing> {
     super(Listing, dataSource.createEntityManager());
   }
 
-  async createListing(
-    query: TenantIdDto,
-    obj: CreateListingDto,
-    user: User,
-  ): Promise<any> {
+  async createListing(query: TenantIdDto, obj: CreateListingDto): Promise<any> {
     const {
       name,
       propertyLocation,
@@ -34,6 +29,8 @@ export class ListingRepository extends Repository<Listing> {
       propertyType,
       floorSize,
       furnishing,
+      addedBy,
+      addedByFeatureAgent,
     } = obj;
     try {
       const isTenant = await this.checkTenantById(query.tenantId);
@@ -49,8 +46,8 @@ export class ListingRepository extends Repository<Listing> {
         floorSize,
         furnishing,
         status: ListingsStatus.ACTIVE,
-        addedByFeatureAgent: true,
-        addedBy: user.id,
+        addedByFeatureAgent,
+        addedBy,
         tenantId: query.tenantId,
       });
       const listingResult = await this.save(listingBase);
@@ -127,6 +124,8 @@ export class ListingRepository extends Repository<Listing> {
       propertyType,
       floorSize,
       furnishing,
+      addedBy,
+      addedByFeatureAgent,
     } = obj;
     try {
       const isTenant = await this.checkTenantById(tenant.tenantId);
@@ -148,6 +147,8 @@ export class ListingRepository extends Repository<Listing> {
           ...(propertyType ? { propertyType } : {}),
           ...(floorSize ? { floorSize } : {}),
           ...(furnishing ? { furnishing } : {}),
+          ...(addedBy ? { addedBy } : {}),
+          ...{ addedByFeatureAgent },
         })
         .execute();
 

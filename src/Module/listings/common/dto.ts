@@ -32,6 +32,12 @@ export class CreateListingDto {
 
   @IsNotEmpty()
   furnishing: FURNISHING_TYPES;
+
+  @IsNotEmpty()
+  addedByFeatureAgent: boolean;
+
+  @IsNotEmpty()
+  addedBy: string;
 }
 
 export class UpdateListingDto {
@@ -55,4 +61,10 @@ export class UpdateListingDto {
 
   @IsOptional()
   furnishing: FURNISHING_TYPES;
+
+  @IsOptional()
+  addedByFeatureAgent: boolean;
+
+  @IsOptional()
+  addedBy: string;
 }

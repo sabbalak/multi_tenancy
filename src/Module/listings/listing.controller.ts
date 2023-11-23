@@ -18,11 +18,11 @@ import { CreateListingDto, UpdateListingDto } from './common/dto';
 import { ListingsService } from './listing.service';
 
 @Controller('/tenants/:tenantId/listings')
-@UseGuards(AuthGuard('jwt'))
 export class ListingsController {
   constructor(private listingsService: ListingsService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async createAgent(
     @Param() query: TenantIdDto,
     @Body() body: CreateListingDto,
@@ -33,10 +33,10 @@ export class ListingsController {
       message: MESSAGE.CREATE_MESSAGE,
     };
     try {
+      console.log(user);
       returnResponse.data = await this.listingsService.createListing(
         query,
         body,
-        user,
       );
     } catch (error) {
       returnResponse.message = error.response.message;
@@ -68,7 +68,6 @@ export class ListingsController {
       message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
-      console.log('query:', query);
       returnResponse.data = await this.listingsService.getListingById(query);
     } catch (error) {
       returnResponse.message = error.response.message;
@@ -78,6 +77,7 @@ export class ListingsController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'))
   deleteListingById(@Param() query: TenantIdDto): ResponseDto {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
@@ -93,6 +93,7 @@ export class ListingsController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard('jwt'))
   async updateListing(
     @Param() query: TenantIdDto,
     @Body() body: UpdateListingDto,
