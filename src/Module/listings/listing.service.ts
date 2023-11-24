@@ -11,8 +11,8 @@ export class ListingsService {
     return this.listingRepository.createListing(query, obj);
   }
 
-  getListing(query: TenantIdDto): Promise<Listing[]> {
-    return this.listingRepository.getListing(query);
+  getListing(query: TenantIdDto, queryParam: any): Promise<Listing[]> {
+    return this.listingRepository.getListing(query, queryParam);
   }
 
   getListingById(query: TenantIdDto): Promise<Listing> {

@@ -57,18 +57,35 @@ export class ListingRepository extends Repository<Listing> {
     }
   }
 
-  async getListing(tenant: TenantIdDto): Promise<Listing[]> {
+  async getListing(tenant: TenantIdDto, queryParam?: any): Promise<Listing[]> {
     try {
       const isTenant = await this.checkTenantById(tenant.tenantId);
       if (!isTenant) {
         throw new NotFoundException(`Tenant ${tenant.tenantId} does not exist`);
       }
-      const featureAgent = await this.createQueryBuilder('featured_listings')
-        .andWhere('featured_listings.tenantId = :tenantId', {
-          tenantId: tenant.tenantId,
-        })
-        .getMany();
-      return featureAgent;
+      let featureAgent = await this.createQueryBuilder(
+        'featured_listings',
+      ).andWhere('featured_listings.tenantId = :tenantId', {
+        tenantId: tenant.tenantId,
+      });
+      if (queryParam.by_feature_agent === 'true') {
+        featureAgent = featureAgent.andWhere(
+          'featured_listings.is_added_by_feature_agent = :fa',
+          {
+            fa: 1,
+          },
+        );
+      }
+      if (queryParam.by_user === 'true') {
+        featureAgent = featureAgent.andWhere(
+          'featured_listings.is_added_by_feature_agent = :fa',
+          {
+            fa: 0,
+          },
+        );
+      }
+
+      return featureAgent.getMany();
     } catch (err) {
       throw new ConflictException(err.message);
     }

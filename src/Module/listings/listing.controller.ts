@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -46,13 +47,19 @@ export class ListingsController {
   }
 
   @Get()
-  async getListing(@Param() query: TenantIdDto): Promise<ResponseDto> {
+  async getListing(
+    @Param() query: TenantIdDto,
+    @Query() queryParam: any,
+  ): Promise<ResponseDto> {
     const returnResponse: ResponseDto = {
       statusCode: RESPONSE_CODE.SUCCESS,
       message: MESSAGE.RETRIVE_MESSAGE,
     };
     try {
-      returnResponse.data = await this.listingsService.getListing(query);
+      returnResponse.data = await this.listingsService.getListing(
+        query,
+        queryParam,
+      );
     } catch (error) {
       returnResponse.message = error.response.message;
       returnResponse.statusCode = error.response.statusCode;
